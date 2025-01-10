@@ -13,9 +13,7 @@ const PORT = process.env.PORT || 3000;
 const __dirname = path.resolve();
 
 
-app.get('/', (req, res) => {
-    res.send('Server is always ready');
-});
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
