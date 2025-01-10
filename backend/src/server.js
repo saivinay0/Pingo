@@ -6,9 +6,11 @@ import cookieParser from 'cookie-parser';
 import messageRoute from './routes/message.route.js';
 import cors from 'cors';
 import { io, server, app } from './lib/socket.js';
+import path from "path";
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
+const __dirname = path.resolve();
 
 
 app.get('/', (req, res) => {
@@ -22,6 +24,15 @@ app.use(cors({
 }));
 app.use('/api/auth', router);
 app.use('/api/messages', messageRoute);
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    });
+}
+
 
 server.listen(PORT, () => {
 
